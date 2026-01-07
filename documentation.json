@@ -13,18 +13,28 @@
         "icon": "align-center",
         "tabs": [
           {
-            "tab": "General",
+            "tab": "Главое",
             "icon": "align-center-icon",
             "pages": [
               {
-                "title": "Главная",
-                "path": "general",
+                "title": "Об огранизации",
+                "path": "about",
                 "icon": "align-center-icon"
               },
               {
-                "title": "Объекты",
-                "path": "series",
+                "title": "Специальные мобильные группы",
+                "path": "SMG",
                 "icon": "align-center-icon"
+              }
+            ]
+          },
+          {
+            "tab": "Объекты",
+            "icon": "align-center-icon",
+            "dropdowns": [
+              {
+                "dropdown": "CRH-001",
+                "pages": []
               }
             ]
           }

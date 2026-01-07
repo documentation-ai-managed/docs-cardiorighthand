@@ -13,41 +13,7 @@
     "tabs": [
       {
         "tab": "Documentation",
-        "icon": "book",
-        "groups": [
-          {
-            "group": "Getting Started",
-            "icon": "rocket",
-            "pages": [
-              {
-                "title": "Introduction",
-                "path": "introduction",
-                "icon": "home"
-              },
-              {
-                "title": "Quickstart",
-                "path": "quickstart",
-                "icon": "zap"
-              }
-            ]
-          },
-          {
-            "group": "Core Concepts",
-            "icon": "layers",
-            "pages": [
-              {
-                "title": "Concepts",
-                "path": "concepts",
-                "icon": "file-text"
-              },
-              {
-                "title": "Authentication",
-                "path": "authentication",
-                "icon": "lock"
-              }
-            ]
-          }
-        ]
+        "icon": "book"
       },
       {
         "tab": "API Reference",

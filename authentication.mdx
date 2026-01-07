@@ -1,0 +1,178 @@
+---
+title: Authentication and Permissions
+description: Learn how to securely access different areas and manage permissions within the organization.
+---
+
+## Overview
+
+Access CardioRightHand facilities and systems requires strict authentication and clearance verification. You maintain security through defined user roles and clearance levels, from Level 1 (restricted personnel) to Level 5 (O5 Council). Each role grants permissions to specific zones, objects, and subdivisions.
+
+<Columns cols={3}>
+  <Card title="Level 1: Janitorial" icon="shield" href="#roles">
+    Basic access to public areas. No object interaction.
+  </Card>
+  <Card title="Level 3: Researcher" icon="book-open" href="#roles">
+    Zone B and C entry. Read-only object data.
+  </Card>
+  <Card title="Level 5: O5 Council" icon="users" href="#roles">
+    Full access to all zones and anomalous objects.
+  </Card>
+</Columns>
+
+<Callout kind="alert">
+  Never share credentials. Unauthorized access triggers immediate containment protocols.
+</Callout>
+
+## User Roles and Clearance Levels
+
+Roles determine your permissions. Administrators assign levels via the central system at `https://dashboard.example.com/roles`.
+
+| Role | Clearance Level | Zones Accessible | Object Permissions |
+|-----|-----------------|------------------|--------------------|
+| Janitorial | 1 | A (Public) | None |
+| Security | 2 | A, B | Monitoring only |
+| Researcher | 3 | A, B, C | Read/Observe |
+| Senior Staff | 4 | All | Read/Write |
+| O5 Council | 5 | All + Secure Vault | Full Control |
+
+Anchor to [roles section](#user-roles-and-clearance-levels) for details.
+
+## Authentication Methods
+
+Choose methods based on your clearance and zone.
+
+<Tabs>
+  <Tab title="Badge Scan" icon="id">
+    Use your RFID badge at entry points.
+
+    <Steps>
+      <Step title="Approach Scanner">
+        Hold badge 5cm from reader.
+      </Step>
+      <Step title="Enter PIN">
+        Input your 6-digit PIN.
+      </Step>
+      <Step title="Await Approval">
+        Green light grants 24-hour access.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Biometric" icon="fingerprint">
+    For high-security zones.
+
+    ```javascript
+    // API call for biometric verification
+    const verifyBiometric = async (scanData) => {
+      const response = await fetch('https://api.example.com/v1/auth/biometric', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scanData, clearanceLevel: 4 })
+      });
+      return response.json();
+    };
+    ```
+  </Tab>
+  <Tab title="Digital Token" icon="key">
+    For remote system access.
+
+    <ParamField header="Authorization" param-type="string" required="true">
+      Bearer `{YOUR_TOKEN}` generated at dashboard.
+    </ParamField>
+
+    <CodeGroup tabs="JavaScript,Python">
+      ```javascript
+      const authToken = 'Bearer YOUR_TOKEN';
+      fetch('https://api.example.com/v1/secure-data', {
+        headers: { Authorization: authToken }
+      });
+      ```
+      ```python
+      import requests
+      headers = {'Authorization': 'Bearer YOUR_TOKEN'}
+      response = requests.get('https://api.example.com/v1/secure-data', headers=headers)
+      ```
+    </CodeGroup>
+  </Tab>
+</Tabs>
+
+## Permission Assignment
+
+Administrators assign permissions through the dashboard API.
+
+<ResponseField name="userId" field-type="string" required="true">
+  Target user identifier.
+</ResponseField>
+
+<ResponseField name="clearanceLevel" field-type="number" required="true">
+  New level (1-5).
+</ResponseField>
+
+<ResponseField name="zones" field-type="array" required="false">
+  Array of zone codes: `["A", "B", "C"]`.
+</ResponseField>
+
+Example assignment:
+
+<Request tabs="JavaScript,cURL">
+  ```javascript
+  await fetch('https://api.example.com/v1/permissions/assign', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer YOUR_ADMIN_TOKEN',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      userId: 'user-123',
+      clearanceLevel: 3,
+      zones: ['A', 'B']
+    })
+  });
+  ```
+  ```bash
+  curl -X POST https://api.example.com/v1/permissions/assign \
+    -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "userId": "user-123",
+      "clearanceLevel": 3,
+      "zones": ["A", "B"]
+    }'
+  ```
+</Request>
+
+## Secure Zone Entry Procedures
+
+Follow these steps for all restricted zones.
+
+<Steps>
+  <Step title="Pre-Entry Check" icon="check-circle">
+    Verify your clearance matches the zone requirement.
+  </Step>
+  <Step title="Authenticate">
+    Use primary method (badge or biometric).
+  </Step>
+  <Step title="Scan Object Log" icon="database">
+    Log intent: ```javascript logEntry({zone: 'C', object: 'CRH-047'}); ```
+  </Step>
+  <Step title="Enter and Monitor">
+    Report anomalies immediately.
+  </Step>
+</Steps>
+
+<Expandable title="Advanced: Multi-Factor for Vaults" default-open="false">
+  Vaults require badge + biometric + token.
+
+  ```mermaid
+  sequenceDiagram
+      You->>Scanner: Badge Scan
+      Scanner->>System: Verify Level
+      System->>You: Biometric Prompt
+      You->>Scanner: Fingerprint
+      Scanner->>System: Token Check
+      System->>You: Access Granted
+  ```
+</Expandable>
+
+<Callout kind="danger">
+  Tampering with auth systems results in permanent Level 0 reassignment.
+</Callout>

@@ -2,14 +2,34 @@
   "name": "CardioRightHand",
   "initialRoute": "introduction",
   "colors": {
-    "light": {
-      "brand": "#3B82F6"
-    },
     "dark": {
-      "brand": "#6ca1f8"
+      "brand": "#020202"
     }
   },
   "navigation": {
-    "pages": []
+    "versions": [
+      {
+        "version": "Stable",
+        "icon": "align-center",
+        "tabs": [
+          {
+            "tab": "General",
+            "icon": "align-center-icon",
+            "pages": [
+              {
+                "title": "Главная",
+                "path": "general",
+                "icon": "align-center-icon"
+              },
+              {
+                "title": "Объекты",
+                "path": "series",
+                "icon": "align-center-icon"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }
